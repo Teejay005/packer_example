@@ -1,0 +1,69 @@
+{
+  "variables": {
+    "aws_access_key": "AKIAIWLUV67AWB52PAKQ",
+    "aws_secret_key": "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",
+    "region": "ap-southeast-2"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "tags": [
+        {
+          "Name": "packer-exampleblah-testt"
+        }
+      ],
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "{{user `region`}}",
+      "source_ami": "ami-43874721",
+      "instance_type": "t2.micro",
+			"ssh_username": "ec2-user",
+			"ssh_agent_auth": true,
+      "ssh_keypair_name": "aws-key",
+			"secret_key": "aws-key",
+			"security_group_id": "sg-fec67087",
+      "ami_block_device_mappings": [
+        {
+					"device_name": "/dev/sdb",
+					"virtual_name": "ephemeral0"
+        },
+				{
+					"device_name": "/dev/sdc",
+					"virtual_name":"ephemeral1"
+        }
+      ],
+      "ami_name": "packer-exampleblah-testt {{timestamp}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "./welcome.txt",
+      "destination": "/home/ec2-user/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "ls -al /home/ec2-user",
+        "cat /home/ec2-user/welcome.txt"
+  ]
+},
+{
+  "type": "shell",
+  "script": "./example.sh"
+},
+{
+  "type": "shell",
+  "inline": [
+    "sudo cp /home/ec2-user/welcome.txt /var/www/html/index.html",
+    "sudo cat /var/www/html/index.html"
+  ]
+}
+],
+"post-processors":[
+  {
+    "type": "vagrant",
+    "keep_input_artifact": true
+  }
+]
+}

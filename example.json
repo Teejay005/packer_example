@@ -1,0 +1,62 @@
+{
+  "variables": {
+    "aws_access_key": "AKIAIWLUV67AWB52PAKQ",
+    "aws_secret_key": "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",
+    "region": "ap-southeast-2"
+  },
+  "builders": [
+    {
+      "type": "amazon-instance",
+      "tags": [
+        {
+          "Name": "packer-exampleblah-testt"
+        }
+      ],
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "{{user `region`}}",
+      "source_ami": "ami-019cf23b",
+      "instance_type": "m3.medium",
+      "ssh_username": "ec2-user",
+			"secret_key": "aws-key",
+      "account_id": "624353230204",
+			"security_group_id": "sg-fec67087",
+      "s3_bucket": "serverless-chatbot-code-2",
+      "x509_cert_path": "server.crt",
+      "x509_key_path": "server.key",
+      "x509_upload_path": "/tmp",
+      "skip_metadata_api_check": true,
+      "ami_block_device_mappings": [
+        {
+					"delete_on_termination":true,
+					"volume_size": 4,
+					"virtual_name": "ephemeral0"
+        },
+				{
+					"delete_on_termination":true,
+					"volume_size": 4,
+					"virtual_name":"ephemeral1"
+        }
+      ],
+      "ami_name": "packer-exampleblah-testt {{timestamp}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "./welcome.txt",
+      "destination": "/home/ec2-user/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "ls -al /home/ec2-user",
+        "cat /home/ec2-user/welcome.txt"
+      ]
+    },
+    {
+      "type": "shell",
+      "script": "./example.sh"
+    }
+  ]
+}
