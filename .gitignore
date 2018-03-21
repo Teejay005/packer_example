@@ -1,1 +1,3 @@
 .vagrant
+server1.crt
+server1.key
