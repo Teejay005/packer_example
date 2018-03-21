@@ -1,7 +1,7 @@
 {
   "variables": {
-    "aws_access_key": "AKIAIWLUV67AWB52PAKQ",
-    "aws_secret_key": "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",
+    "aws_access_key": "",
+    "aws_secret_key": "",
     "region": "ap-southeast-2"
   },
   "builders": [
